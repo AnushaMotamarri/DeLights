@@ -2,25 +2,34 @@ import numpy as np
 import pygame
 import sys
 import math
+import random
 
 BLUE = (0,0,255)
 BLACK = (0,0,0)
 RED = (255,0,0)
 YELLOW = (255,255,0)
-ROW_COUNT = 3
-COLUMN_COUNT = 3
+ROW_COUNT=COLUMN_COUNT = int(raw_input("Enter size of the Light board: "))
 SQUARESIZE = 100
 width = COLUMN_COUNT * SQUARESIZE
 height = (ROW_COUNT+1) * SQUARESIZE
 size = (width, height)
 RADIUS = int(SQUARESIZE/2 - 5)
 nmoves=0
+mxmoves=0
+
+
+
 
 def create_board():
-	board = np.zeros((ROW_COUNT,COLUMN_COUNT))
+	board=np.zeros((ROW_COUNT*COLUMN_COUNT))
+	ic=random.sample(range(0,ROW_COUNT*COLUMN_COUNT),ROW_COUNT)
+	board[ic]=1
+	board.shape =((ROW_COUNT,COLUMN_COUNT))
 	return board
 
-
+def findminmoves(board):
+	ic=board[:]
+	ic.shape=(ROW_COUNT*COLUMN_COUNT)
 
 def draw_board(board):
 	for c in range(COLUMN_COUNT):
@@ -32,15 +41,14 @@ def draw_board(board):
 		for r in range(ROW_COUNT):
 			if board[r][c] == 1:
 				pygame.draw.circle(screen, RED, (int(c*SQUARESIZE+SQUARESIZE/2), int(r*SQUARESIZE+SQUARESIZE+SQUARESIZE/2)), RADIUS)
-
-
-
 	pygame.display.update()
 
 
 
 if __name__=="__main__":
 	board = create_board()
+	effmoves=findeffmoves()
+	mxmoves=findminmoves(effmoves,board)
 	game_over = False
 	pygame.init()
 	screen = pygame.display.set_mode(size)
